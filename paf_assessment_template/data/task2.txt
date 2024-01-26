@@ -1,14 +1,14 @@
 Write your Task 2 answers in this file
 mongoimport -hlocalhost --port 27017 -dbedandbreakfast -clistings_and_reviews --type=json data/listings.json
 
-
+Task 2.2
 db.getCollection("listings_and_reviews").aggregate([
     {
         $match: {"address.country": {$regex: "Australia", $options:"i"}}
     }, {$out: "listings"}
 ]);
 
-
+Task 2.3
 db.getCollection("listings").aggregate([
     {
         $unwind: {
@@ -39,8 +39,6 @@ db.getCollection("listings").aggregate([
         
     }
 ]);
-
-
 
 edited after submission
 task2.3
