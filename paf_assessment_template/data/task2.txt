@@ -1,0 +1,9 @@
+Write your Task 2 answers in this file
+mongoimport -hlocalhost --port 27017 -dbedandbreakfast -clistings_and_reviews --type=json data/listings.json
+
+
+db.getCollection("listings_and_reviews").aggregate([
+    {
+        $match: {"address.country": {$regex: "Australia", $options:"i"}}
+    }, {$out: "listings"}
+]);
