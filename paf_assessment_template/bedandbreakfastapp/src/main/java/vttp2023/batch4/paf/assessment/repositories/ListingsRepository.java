@@ -36,9 +36,9 @@ public class ListingsRepository {
 
 
 	public List<String> getSuburbs(String country) {
-		Query query = Query.query(Criteria.where("address.country").is(country));
+		//Query query = Query.query(Criteria.where("address.country").is(country));
 		
-		List<String> suburbs = template.findDistinct(query, "address.suburb", "listings", String.class);
+		List<String> suburbs = template.findDistinct(new Query(), "address.suburb", "listings", String.class);
 		System.out.println("suburbs" + suburbs);
 		return suburbs;
 	}
@@ -48,39 +48,40 @@ public class ListingsRepository {
 	 * inside this comment block
 	 * eg. db.bffs.find({ name: 'fred }) 
 	 * 
-	 * db.listings.find(
-    	{
-    	"address.suburb": {$regex: "Darlinghurst", $options:"i"},
-    	accommodates: 2,
-    	price: {$lte: 100}
-    	},
-    	{
-        	_id:1,
-        	name:1,
-        	accommodates:1,
-        	price:1
-    	}
-    
-    	).sort(
-        	{"price":-1}
-);
+	db.listings.find(
+		{
+		"address.suburb": {$regex: "Darlinghurst", $options:"i"},
+		accommodates: {$lte:2},
+		min_nights: {$gte:2},
+		price: {$lte: 100}
+		},
+		{
+			_id:1,
+			name:1,
+			accommodates:1,
+			price:1
+		}
+		
+		).sort(
+			{"price":-1}
+	);
 	 *
 	 */
 	public List<AccommodationSummary> findListings(String suburb, int persons, int duration, float priceRange) {
 		Query query = Query.query(Criteria.where("address.suburb").is(suburb)
-			.and("accommodates").is(persons)
-			.and("duration").is(duration)
-			.and("price").lte(priceRange)
+			.and("accommodates").lte(persons)
+			.and("min_nights").lte(duration)
+			.and("price").gte(priceRange)
 		);
 
 		List<Document> doc = template.find(query, Document.class, "listings");
+		System.out.println("doc" + doc);
+
 		//convert document to acc summary
 		List<AccommodationSummary> accSum = new LinkedList<>();
 
 		for (Document d: doc) {
 			AccommodationSummary list = new AccommodationSummary();
-
-			// Document address = d.get("address", Document.class);
 			
 			list.setId(d.getString("_id"));
 			list.setName(d.getString("name"));
