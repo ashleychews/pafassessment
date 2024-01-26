@@ -18,4 +18,4 @@ ENV SPRING_DATA_MONGODB_URI=
 
 EXPOSE ${PORT}
 
-ENTRYPOINT SERVER_PORT=${PORT} java -jar target/bedandbreakfastapp-0.0.1-SNAPSHOT.jar
+ENTRYPOINT SERVER_PORT=${PORT} java -jar target/assessment-0.0.1-SNAPSHOT.jar
