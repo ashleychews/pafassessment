@@ -39,3 +39,34 @@ db.getCollection("listings").aggregate([
         
     }
 ]);
+
+
+
+edited after submission
+task2.3
+db.listings.aggregate([
+{
+    $unwind: "$reviews"
+},
+{
+    $group: {
+        _id: "$reviews._id",
+        date: {$first: "$reviews.date"},
+        listing_id: {$first: "$reviews.listing_id"},
+        reviewer_name: {$first: "$reviews.reviewer_name"},
+        comments: {$first: "$reviews.comments"}
+        
+    }
+}
+]);
+
+task2.4 
+db.listings.updateMany(
+  {},
+  {
+    $unset: { reviews: "" },
+  }
+);
+
+task2.5
+mongoexport --db bedandbreakfast --collection reviews --fields date,listing_id,reviewer_name,comments --type=csv --out=reviews.csv
