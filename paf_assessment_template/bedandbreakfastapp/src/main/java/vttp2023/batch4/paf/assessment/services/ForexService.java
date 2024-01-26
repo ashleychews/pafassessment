@@ -6,11 +6,9 @@ import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import jakarta.json.Json;
-import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
 
@@ -35,17 +33,23 @@ public class ForexService {
 		payload = resp.getBody();
         JsonReader reader = Json.createReader(new StringReader(payload));
         JsonObject result = reader.readObject();
-		// data: {}
+		// data: {
+		// "amount": 1,
+		// "base": "EUR",
+		// "date": "2024-01-25",
+		// "rates": {
+		// "AUD": 1.6537,}
+		
 		data = result.getJsonObject("rates");
 		System.out.println("data" + data);
-        
-		//get aud and sgd
+
 		from = data.getString("AUD");
 		to = data.getString("SGD");
-		//convert to sgd price
-		amount = from * to;
-
         
+		//get aud and sgd
+		float ausEx = data.getJsonNumber(from).bigDecimalValue().floatValue();
+        float sgdEx = data.getJsonNumber(to).bigDecimalValue().floatValue();
+		float f = amount*(sgdEx/ausEx);
 		return -1000f;
 	}
 

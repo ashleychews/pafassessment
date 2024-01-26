@@ -7,3 +7,21 @@ db.getCollection("listings_and_reviews").aggregate([
         $match: {"address.country": {$regex: "Australia", $options:"i"}}
     }, {$out: "listings"}
 ]);
+
+
+db.getCollection("listings").aggregate([
+    {$unwind: {path:"$reviews",preserveNullAndEmptyArrays: true}},
+    {
+        $group: {
+            _id: "$_id",
+            reviews: 
+                {$push: "reviews"},
+            _id:"$reviews._id",
+            date: "$reviews.date",
+            listing_id: "$reviews.listing_id",
+            reviewer_name:"reviews.reviewer_name" ,
+            comments: "reviews.comments"
+                
+        }
+    }
+])
