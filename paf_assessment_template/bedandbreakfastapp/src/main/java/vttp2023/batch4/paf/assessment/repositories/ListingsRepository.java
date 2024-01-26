@@ -28,7 +28,9 @@ public class ListingsRepository {
 	 * inside this comment block
 	 * eg. db.bffs.find({ name: 'fred }) 
 	 *
-	 *
+	 *db.listings.distinct(
+    	address.suburb"
+);
 	 */
 
 
@@ -36,7 +38,7 @@ public class ListingsRepository {
 	public List<String> getSuburbs(String country) {
 		Query query = Query.query(Criteria.where("address.country").is(country));
 		
-		List<String> suburbs = template.find(query, String.class, "listings");
+		List<String> suburbs = template.findDistinct(query, "address.suburb", "listings", String.class);
 		System.out.println("suburbs" + suburbs);
 		return suburbs;
 	}
@@ -78,11 +80,11 @@ public class ListingsRepository {
 		for (Document d: doc) {
 			AccommodationSummary list = new AccommodationSummary();
 
-			Document address = d.get("address", Document.class);
+			// Document address = d.get("address", Document.class);
 			
 			list.setId(d.getString("_id"));
 			list.setName(d.getString("name"));
-			list.setPrice(d.getDouble("price"));
+			list.setPrice(d.get("price", Number.class).floatValue());
 			list.setAccomodates(d.getInteger("accommodates"));
 
 			accSum.add(list);
