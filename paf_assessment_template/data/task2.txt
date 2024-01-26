@@ -10,18 +10,32 @@ db.getCollection("listings_and_reviews").aggregate([
 
 
 db.getCollection("listings").aggregate([
-    {$unwind: {path:"$reviews",preserveNullAndEmptyArrays: true}},
+    {
+        $unwind: {
+            path: "$reviews",
+            preserveNullAndEmptyArrays: true
+        }
+    },
     {
         $group: {
             _id: "$_id",
             reviews: 
                 {$push: "reviews"},
-            _id:"$reviews._id",
-            date: "$reviews.date",
-            listing_id: "$reviews.listing_id",
-            reviewer_name:"reviews.reviewer_name" ,
-            comments: "reviews.comments"
-                
+            review_id: {$first: "$reviews._id"},
+            date: { $first: "$reviews.date" },
+            reviewer_name: { $first: "$reviews.reviewer_name" },
+            comments: { $first: "$reviews.comments"}
+    
         }
+    },
+    
+    {
+        $project: {
+            review_id: 1,
+            date: 1,
+            reviewer_name:1,
+            comments:1
+        }
+        
     }
-])
+]);
