@@ -62,13 +62,13 @@ public class ListingsService {
 	// IMPORTANT: DO NOT MODIFY THE SIGNATURE OF THIS METHOD.
 	// You may only add annotations and throw exceptions to this method
 	public void createBooking(Bookings booking) {
-		//create user
-		//User user = bookingsRepository.newUser();
-		//create new booking
-		// Bookings bookings = bookingsRepository.newBookings(booking);
-
-		//if booking successful return 200 status code
-		//if booking unsucessful return 500 status code
+		try {
+			//create user if user does not exist
+			bookingsRepository.newUser(new User(booking.getEmail(), booking.getName()));
+			bookingsRepository.newBookings(booking);
+		} catch (Exception e) {
+			System.out.println("Error");
+		}
 
 	}
 

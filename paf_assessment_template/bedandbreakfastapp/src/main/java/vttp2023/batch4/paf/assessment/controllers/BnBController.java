@@ -1,15 +1,19 @@
 package vttp2023.batch4.paf.assessment.controllers;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -18,6 +22,7 @@ import jakarta.json.Json;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonArrayBuilder;
 import vttp2023.batch4.paf.assessment.models.Accommodation;
+import vttp2023.batch4.paf.assessment.models.Bookings;
 import vttp2023.batch4.paf.assessment.services.ListingsService;
 import vttp2023.batch4.paf.assessment.Utils;
 
@@ -85,5 +90,17 @@ public class BnBController {
 	}
 
 	// TODO: Task 6
+	@PostMapping("/api/accommodation")
+	@ResponseBody
+	public ResponseEntity<String> getAccommondationDetails(@RequestParam String id) {
+		//process booking
+		try {
+			listingsSvc.createBooking(new Bookings());
+			return ResponseEntity.ok("200");
+		} catch (Exception e) {
+			return ResponseEntity.ok("400");
+		}
+
+	}
 
 }
