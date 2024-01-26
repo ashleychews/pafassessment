@@ -1,6 +1,7 @@
 package vttp2023.batch4.paf.assessment.services;
 
 import java.io.StringReader;
+import java.math.BigDecimal;
 
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -49,11 +50,9 @@ public class ForexService {
 		System.out.print("to" + to);
         
 		//get aud and sgd
-		// [] threw exception [Request processing failed: java.lang.ClassCastException: class org.glassfish.json.JsonNumberImpl$JsonBigDecimalNumber cannot be cast to class jakarta.json.JsonString (org.glassfish.json.JsonNumberImpl$JsonBigDecimalNumber and 
-		//jakarta.json.JsonString are in unnamed module of loader 'app')] with root cause
 		try {
-			float ausEx = data.getJsonNumber(from).bigDecimalValue().floatValue();
-        	float sgdEx = data.getJsonNumber(to).bigDecimalValue().floatValue();
+			float ausEx = Float.parseFloat(data.getJsonObject(to).toString());
+        	float sgdEx = Float.parseFloat(data.getJsonObject(to).toString());
 			float f = amount*(sgdEx/ausEx);
 			return f;
 		} catch (Exception e) {
