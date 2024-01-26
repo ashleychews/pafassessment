@@ -33,8 +33,6 @@ public class ListingsRepository {
 );
 	 */
 
-
-
 	public List<String> getSuburbs(String country) {
 		//Query query = Query.query(Criteria.where("address.country").is(country));
 		

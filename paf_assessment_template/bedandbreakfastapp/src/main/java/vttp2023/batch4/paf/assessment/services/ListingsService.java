@@ -63,9 +63,9 @@ public class ListingsService {
 	// You may only add annotations and throw exceptions to this method
 	public void createBooking(Bookings booking) {
 		//create user
-		User user = bookingsRepository.newUser();
+		//User user = bookingsRepository.newUser();
 		//create new booking
-		Bookings bookings = bookingsRepository.newBookings(booking);
+		// Bookings bookings = bookingsRepository.newBookings(booking);
 
 		//if booking successful return 200 status code
 		//if booking unsucessful return 500 status code

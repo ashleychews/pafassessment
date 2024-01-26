@@ -3,6 +3,7 @@ package vttp2023.batch4.paf.assessment.repositories;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
@@ -36,6 +37,14 @@ public class BookingsRepository {
 	// You may only add throw exceptions to this method
 	public void newUser(User user) {
 		//check if user exist
+		try {
+			Optional<User> exists = userExists(user.email());
+			if (!exists.isPresent()) {
+				template.update(SQL_INSERT_USER_BY_EMAIL, user.email(), user.name());
+			}
+		} catch (DataAccessException e) {
+			System.out.println("error in creaing user");
+		}
 		template.update(SQL_INSERT_USER_BY_EMAIL, user.email());
 	}
 
@@ -43,11 +52,10 @@ public class BookingsRepository {
 	// IMPORTANT: DO NOT MODIFY THE SIGNATURE OF THIS METHOD.
 	// You may only add throw exceptions to this method
 	public void newBookings(Bookings bookings) {
-
 		//if user exist, insert bookings into bookings table
 		template.update(SQL_INSERT_BOOKINGS, 
-		bookings.getBookingId(),
-		bookings.getEmail(),
-		bookings.getDuration());
+			bookings.getBookingId(),
+			bookings.getEmail(),
+			bookings.getDuration());
 	}
 }

@@ -41,16 +41,24 @@ public class ForexService {
 		// "AUD": 1.6537,}
 		
 		data = result.getJsonObject("rates");
-		System.out.println("data" + data);
 
 		from = data.getString("AUD");
 		to = data.getString("SGD");
+
+		System.out.println("from" + from);
+		System.out.print("to" + to);
         
 		//get aud and sgd
-		float ausEx = data.getJsonNumber(from).bigDecimalValue().floatValue();
-        float sgdEx = data.getJsonNumber(to).bigDecimalValue().floatValue();
-		float f = amount*(sgdEx/ausEx);
-		return -1000f;
+		// [] threw exception [Request processing failed: java.lang.ClassCastException: class org.glassfish.json.JsonNumberImpl$JsonBigDecimalNumber cannot be cast to class jakarta.json.JsonString (org.glassfish.json.JsonNumberImpl$JsonBigDecimalNumber and 
+		//jakarta.json.JsonString are in unnamed module of loader 'app')] with root cause
+		try {
+			float ausEx = data.getJsonNumber(from).bigDecimalValue().floatValue();
+        	float sgdEx = data.getJsonNumber(to).bigDecimalValue().floatValue();
+			float f = amount*(sgdEx/ausEx);
+			return f;
+		} catch (Exception e) {
+			return -1000f;
+		}
 	}
 
 
