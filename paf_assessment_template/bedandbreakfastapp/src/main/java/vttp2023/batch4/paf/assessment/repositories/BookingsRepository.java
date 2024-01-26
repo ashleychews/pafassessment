@@ -16,9 +16,9 @@ public class BookingsRepository {
 	
 	// You may add additional dependency injections
 
-	public static final String SQL_SELECT_USER_BY_EMAIL = "select * from users where email like %";
+	public static final String SQL_SELECT_USER_BY_EMAIL = "select * from users where email like ?";
 	public static final String SQL_INSERT_USER_BY_EMAIL = "insert into users (email, name) values (?,?)";
-	public static final String SQL_INSERT_BOOKINGS = "insert into bookings(booking_id, duration, email) values (?,?,?)";
+	public static final String SQL_INSERT_BOOKINGS = "insert into bookings(booking_id, listing_id, duration, email) values (?,?,?, ?)";
 
 	@Autowired
 	private JdbcTemplate template;
@@ -55,6 +55,7 @@ public class BookingsRepository {
 		//if user exist, insert bookings into bookings table
 		template.update(SQL_INSERT_BOOKINGS, 
 			bookings.getBookingId(),
+			bookings.getListingId(),
 			bookings.getEmail(),
 			bookings.getDuration());
 	}
