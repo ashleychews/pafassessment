@@ -47,8 +47,9 @@ public class ForexService {
 		
 			data = result.getJsonObject("rates");
 
-			Float sgd = Float.parseFloat(data.getJsonNumber("SGD").toString());
-				return sgd;
+			Float sgdEx = Float.parseFloat(data.getJsonNumber("SGD").toString());
+			return sgdEx;
+
 		} catch (Exception e) {
 			return -1000f;
 		}

@@ -14,7 +14,7 @@ create table users (
 
 create table bookings (
     booking_id char(8),
-    listing_id varchar(20) NOT NULL UNIQUE,
+    listing_id varchar(20),
     duration int,
     email varchar(128) not null,
 
@@ -25,7 +25,7 @@ create table bookings (
 create table reviews (
     id int auto_increment,
     date timestamp,
-    listing_id varchar(20) NOT NULL UNIQUE,
+    listing_id varchar(20),
     reviewer_name varchar(64),
     comments text,
 
